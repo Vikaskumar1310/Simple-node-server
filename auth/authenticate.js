@@ -5,7 +5,9 @@ let auth = async (req, res, next)=>{
     try{
         const token = req.header('Authorization').replace('Bearer ', '');
         const decoded = jwt.verify(token, 'thisisfreelancejwt');
+        console.log("decoded", decoded )
         const user = await User.findOne({ email : decoded.email });
+        console.log("user", user)
         if (!user) {
             throw new Error();
         }

@@ -27,8 +27,9 @@ router.post('/login', async(req, res) => {
         if(!user.status){
             return res.status(400).send({ Message: user.message });
         }
-        const token = jwt.sign({ email : user.email }, 'thisisfreelancejwt', { expiresIn: 60 * 60 });
-        return res.status(200).send({ user: user, token: token });
+        console.log('login', user.data)
+        const token = jwt.sign({ email : user.data.email }, 'thisisfreelancejwt', { expiresIn: 60 * 60 });
+        return res.status(200).send({ user: user.data, token: token });
     } catch (e) {
         return res.status(400).send(e);
     }
@@ -46,6 +47,7 @@ router.post('/logout', auth, async(req, res) => {
 //Get user details route
 router.get('/user', auth, async(req, res) => {
     try{
+        console.log('inside get user', req.body.email)
         let userData = await User.findOne({email: req.body.email})
         return res.status(200).send({ User: userData });
     }catch(err){
